@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 
@@ -18,14 +17,21 @@ use App\Http\Controllers\UserController;
 
 Route::group(['middleware' => 'auth:sanctum'], function(){
     //All secure URL's
-    Route::apiResource('/category', 'CategoryController');//->only(['index', 'show']);
-    Route::apiResource('/product', 'ProductController')->only(['index', 'show']);
     Route::post('logout',[UserController::class,'logout']);
+
+    // TODO: add profile,
+    Route::apiResource('/user', 'UserController');//->only(['index', 'show']);
+    // TODO: add orders [cart contents]
+    // TODO: add carts
+    // TODO: add previous carts
 });
+
+Route::post('/register',[UserController::class,'store']);
+
+Route::apiResource('/category', 'CategoryController');//->only(['index', 'show']);
+Route::apiResource('/product', 'ProductController')->only(['index', 'show']);
 
 Route::controller('UserController')->group(function() {
     Route::get('/login','visitor')->name('login');
     Route::post('/login','login');
 });
-
-Route::apiResource('/user', 'UserController');//->only(['index', 'show']);
